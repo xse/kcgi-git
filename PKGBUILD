@@ -1,10 +1,10 @@
-# Maintainer: xse <183953+xse@users.noreply.github.com>
+# Maintainer: xse <elouan.pignet@gmail.com>
 pkgname=kcgi-git
 _pkgname=${pkgname%-*}
 pkgver=0.10.2.0.gd8ade2b
 pkgrel=1
 pkgdesc="Minimal CGI and FastCGI library"
-arch=("i686" "x86_64" "armv6h" "armv7h")
+arch=("i686" "x86_64" "arm" "armv6h" "armv7h" "aarch64") # tested on i686, x86_64 and armv6h
 url="http://kristaps.bsd.lv/kcgi/"
 license=("custom:ISC") # included in source
 depends=("libbsd") # libbsd depends on glibc and curl is included in base
@@ -19,7 +19,7 @@ pkgver() {
 
 build() {
   cd "$_pkgname"
-  ./configure
+  ./configure PREFIX="$pkgdir/usr" BINDIR="$pkgdir/usr/bin" SHAREDIR="$pkgdir/usr/share" SBINDIR="$pkgdir/usr/bin"  INCLUDEDIR="$pkgdir/usr/include" LIBDIR="$pkgdir/usr/lib" MANDIR="$pkgdir/usr/share/man"
   make
 }
 
@@ -30,6 +30,6 @@ check() {
 
 package() {
   cd "$_pkgname"
-  make PREFIX="$pkgdir/usr" BINDIR="$pkgdir/usr/bin" SHAREDIR="$pkgdir/usr/share" SBINDIR="$pkgdir/usr/bin"  INCLUDEDIR="$pkgdir/usr/include" LIBDIR="$pkgdir/usr/lib" MANDIR="$pkgdir/usr/share/man" install
+  make install
   install -Dm644 "LICENSE.md" "$pkgdir/usr/share/licenses/$_pkgname/LICENSE"
 }
